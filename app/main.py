@@ -26,7 +26,12 @@ def main():
     print("Logs from your program will appear here!", file=sys.stderr)
     # TODO: Uncomment the following line to pass the first stage
     print(chat.choices[0].message.content)
-    tools={
+    chat=client.chat.create(
+        model="anthropic/claude-haiku-4.5",
+        messages=[{"role": "user", "content": args.p}],
+        tools=[
+        # Add your tool specifications here
+        {
         "type" : "function",
         "function": {
             "name": "Read",
@@ -43,6 +48,8 @@ def main():
             }
         }
     }
-
+        ]
+    )
+    
 if __name__ == "__main__":
     main()
