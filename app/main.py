@@ -24,7 +24,7 @@ def main():
                 "function": {
                     "name": "Read",
                     "description":"Read and return the content of a file",
-                    "parameters":{
+                    "parameter":{
                         "type":"object",
                         "properties":{
                             "file_path":{
