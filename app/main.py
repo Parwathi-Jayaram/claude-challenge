@@ -19,6 +19,24 @@ def main():
     chat = client.chat.completions.create(
         model="anthropic/claude-haiku-4.5",
         messages=[{"role": "user", "content": args.p}],
+        tools=[{
+                "type" : "function",
+                "function": {
+                    "name": "Read",
+                    "description":"Read and return the content of a file",
+                    "parameter":{
+                        "type":"object",
+                        "properties":{
+                            "file_path":{
+                                "type":"string",
+                                "description":"The path to the file to read"
+                            }
+                        },
+                        "required":["file_path"]
+                    }
+                }
+            }
+                ]
     )
     if not chat.choices or len(chat.choices) == 0:
         raise RuntimeError("no choices in response")
@@ -26,30 +44,6 @@ def main():
     print("Logs from your program will appear here!", file=sys.stderr)
     # TODO: Uncomment the following line to pass the first stage
     print(chat.choices[0].message.content)
-    chat=client.chat.create(
-        model="anthropic/claude-haiku-4.5",
-        messages=[{"role": "user", "content": args.p}],
-        tools=[
-        # Add your tool specifications here
-        {
-        "type" : "function",
-        "function": {
-            "name": "Read",
-            "description":"Read and return the content of a file",
-            "parameter":{
-                "type":"object",
-                "properties":{
-                    "file_path":{
-                        "type":"string",
-                        "description":"The path to the file to read"
-                    }
-                },
-                "required":["file_path"]
-            }
-        }
-    }
-        ]
-    )
     
 if __name__ == "__main__":
     main()
