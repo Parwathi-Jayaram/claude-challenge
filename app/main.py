@@ -50,6 +50,8 @@ def main():
         )
         with open(file_path, "r") as f:
             print(f.read(), end="")
+    else:
+        print(message.content, end="")
     
 if __name__ == "__main__":
     main()
