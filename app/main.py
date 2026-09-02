@@ -24,7 +24,7 @@ def main():
                 "function": {
                     "name": "Read",
                     "description":"Read and return the content of a file",
-                    "parameter":{
+                    "parameters":{
                         "type":"object",
                         "properties":{
                             "file_path":{
@@ -43,10 +43,13 @@ def main():
     message=chat.choices[0].message
     if message.tool_calls:
         tool_call = message.tool_calls[0]
-        args = json.loads(tool_call.function.arguments)
-        print(args)  # temporary debug
-    else:
-        print(message.content)
+        tool_args = json.loads(tool_call.function.arguments)
+        file_path = (
+            tool_args.get("file_path")
+            or tool_args.get("parameter")
+        )
+        with open(file_path, "r") as f:
+            print(f.read(), end="")
     
 if __name__ == "__main__":
     main()
