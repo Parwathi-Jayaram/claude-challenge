@@ -34,30 +34,11 @@ def main():
                         },
                         "required":["file_path"]
                     }
-                },
-                "choices":[
-                    {
-                        "index":"0",
-                        "message":{
-                            "role":"assistant",
-                            "content":None,
-                            "tool_calls":[
-                                {
-                                    "id":"call_abc123",
-                                    "type":"function",
-                                    "function":{
-                                        "name":"Read",
-                                        "argument":"{\"file_path\": \"/path/to/file.txt\"}"
-                                    }
-                                }
-                            ]
-                        },
-                        "finish_reason":"tool_calls"
-                    }
-                ]
+                }
             }
         ]        
     )
+    print(chat.choices[0].message)
     if not chat.choices or len(chat.choices) == 0:
         raise RuntimeError("no choices in response")
     # You can use print statements as follows for debugging, they'll be visible when running tests.
