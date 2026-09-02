@@ -15,23 +15,34 @@ def main():
 
     if not API_KEY:
         raise RuntimeError("OPENROUTER_API_KEY is not set")
-
     client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
-
     chat = client.chat.completions.create(
         model="anthropic/claude-haiku-4.5",
         messages=[{"role": "user", "content": args.p}],
     )
-
     if not chat.choices or len(chat.choices) == 0:
         raise RuntimeError("no choices in response")
-
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!", file=sys.stderr)
-
     # TODO: Uncomment the following line to pass the first stage
     print(chat.choices[0].message.content)
-
+    tools={
+        "type" : "function",
+        "function": {
+            "name": "Read",
+            "description":"Read and return the content of a file",
+            "parameter":{
+                "type":"object",
+                "properties":{
+                    "file_path":{
+                        "type":"string",
+                        "description":"The path to the file to read"
+                    }
+                },
+                "required":["file_path"]
+            }
+        }
+    }
 
 if __name__ == "__main__":
     main()
