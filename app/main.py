@@ -41,7 +41,7 @@ def main():
     if not chat.choices:
         raise RuntimeError("no choices in response")
     message=chat.choices[0].message
-    if message.tool.calls:
+    if message.tool_calls:
         tool_call = message.tool_calls[0]
         args = json.loads(tool_call.function.arguments)
         print(args)  # temporary debug
