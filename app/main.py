@@ -41,16 +41,38 @@ def main():
                     "properties": {
                         "file_path": {
                             "type": "string",
-                            "description": "Path of file to read"
+                            "description": "The path to the file to read"
                         }
                     },
                     "required": ["file_path"]
+                }
+            }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "Write",
+                "description": "Write content to a file",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "file_path": {
+                            "type": "string",
+                            "description": "The path of the file to write to"
+                        },
+                        "content": {
+                            "type": "string",
+                            "description": "The content to write to the file"
+                        }
+                    },
+                    "required": ["file_path", "content"]
                 }
             }
         }
     ]
 
     while True:
+
         chat = client.chat.completions.create(
             model="anthropic/claude-haiku-4.5",
             messages=messages,
@@ -70,14 +92,31 @@ def main():
 
         for tool_call in message.tool_calls:
 
+            tool_name = tool_call.function.name
+
             tool_args = json.loads(
                 tool_call.function.arguments
             )
 
-            file_path = tool_args["file_path"]
+            if tool_name == "Read":
 
-            with open(file_path, "r") as f:
-                result = f.read()
+                file_path = tool_args["file_path"]
+
+                with open(file_path, "r") as f:
+                    result = f.read()
+
+            elif tool_name == "Write":
+
+                file_path = tool_args["file_path"]
+                content = tool_args["content"]
+
+                with open(file_path, "w") as f:
+                    f.write(content)
+
+                result = "File written successfully"
+
+            else:
+                result = f"Unknown tool: {tool_name}"
 
             messages.append(
                 {
