@@ -1,6 +1,7 @@
 import argparse
 import os
 import json
+import subprocess
 from openai import OpenAI
 
 API_KEY = os.getenv("OPENROUTER_API_KEY")
@@ -68,6 +69,23 @@ def main():
                     "required": ["file_path", "content"]
                 }
             }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "Bash",
+                "description": "Execute a shell command",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "command": {
+                            "type": "string",
+                            "description": "The command to execute"
+                        }
+                    },
+                    "required": ["command"]
+                }
+            }
         }
     ]
 
@@ -93,30 +111,52 @@ def main():
         for tool_call in message.tool_calls:
 
             tool_name = tool_call.function.name
-
             tool_args = json.loads(
                 tool_call.function.arguments
             )
 
-            if tool_name == "Read":
+            try:
 
-                file_path = tool_args["file_path"]
+                if tool_name == "Read":
 
-                with open(file_path, "r") as f:
-                    result = f.read()
+                    file_path = tool_args["file_path"]
 
-            elif tool_name == "Write":
+                    with open(file_path, "r") as f:
+                        result = f.read()
 
-                file_path = tool_args["file_path"]
-                content = tool_args["content"]
+                elif tool_name == "Write":
 
-                with open(file_path, "w") as f:
-                    f.write(content)
+                    file_path = tool_args["file_path"]
+                    content = tool_args["content"]
 
-                result = "File written successfully"
+                    with open(file_path, "w") as f:
+                        f.write(content)
 
-            else:
-                result = f"Unknown tool: {tool_name}"
+                    result = "File written successfully"
+
+                elif tool_name == "Bash":
+
+                    command = tool_args["command"]
+
+                    completed = subprocess.run(
+                        command,
+                        shell=True,
+                        capture_output=True,
+                        text=True
+                    )
+
+                    result = (
+                        completed.stdout +
+                        completed.stderr
+                    )
+
+                else:
+                    result = (
+                        f"Unknown tool: {tool_name}"
+                    )
+
+            except Exception as e:
+                result = f"Error: {str(e)}"
 
             messages.append(
                 {
