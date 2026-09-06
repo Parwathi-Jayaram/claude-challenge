@@ -1,34 +1,53 @@
 [![progress-banner](https://backend.codecrafters.io/progress/claude-code/e9ecbbe2-098e-4bce-be66-bdca9761f7e2)](https://app.codecrafters.io/users/Parwathi-Jayaram?r=2qF)
+# Claude Code Clone
 
-This is a starting point for Python solutions to the
-["Build Your own Claude Code" Challenge](https://codecrafters.io/challenges/claude-code).
+A VS Code extension that brings an AI-powered coding assistant directly into your editor. It uses LLMs to understand code and perform actions through tool calls, just like Claude Code.
 
-Claude Code is an AI coding assistant that uses Large Language Models (LLMs) to
-understand code and perform actions through tool calls. In this challenge,
-you'll build your own Claude Code from scratch by implementing an LLM-powered
-coding assistant.
+## Features
 
-Along the way you'll learn about HTTP RESTful APIs, OpenAI-compatible tool
-calling, agent loop, and how to integrate multiple tools into an AI assistant.
+- Chat interface in the VS Code sidebar
+- Reads and writes files in your workspace
+- Executes shell commands via integrated terminal
+- Supports multiple LLM providers: Groq, OpenRouter, and OpenAI
+- Configurable API key and model selection through VS Code settings
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+## Setup
 
-# Passing the first stage
+1. Install the extension from the VS Code Marketplace
+2. Open Settings (`Ctrl+,`) and search for **"Claude Code"**
+3. Set your API key under **Claude Code: Api Key**
+4. Choose your provider under **Claude Code: Provider** (`groq`, `openrouter`, or `openai`)
 
-The entry point for your `claude-code` implementation is in `app/main.py`. Study
-and uncomment the relevant code, and submit to pass the first stage:
+## Usage
+
+1. Click the **Claude Code** icon in the activity bar to open the chat panel
+2. Type a prompt and press **Send**
+3. The assistant can read files, write files, and run commands in your workspace
+
+## Example Prompts
+
+- `read app/main.py`
+- `write a hello world python script`
+- `run npm install`
+
+## Configuration
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| `claudeCode.apiKey` | Your API key for the selected provider | `""` |
+| `claudeCode.provider` | LLM provider to use | `groq` |
+
+## Development
 
 ```sh
-codecrafters submit
+cd vscode
+npm install
+npm run compile
 ```
 
-# Stage 2 & beyond
+Press `F5` to launch the Extension Development Host and test the extension.
 
-Note: This section is for stages 2 and beyond.
+## License
 
-1. Ensure you have `uv` installed locally.
-2. Run `./your_program.sh` to run your program, which is implemented in
-   `app/main.py`.
-3. Run `codecrafters submit` to submit your solution to CodeCrafters. Test
-   output will be streamed to your terminal.
+MIT
+
