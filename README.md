@@ -1,4 +1,3 @@
-[![progress-banner](https://backend.codecrafters.io/progress/claude-code/e9ecbbe2-098e-4bce-be66-bdca9761f7e2)](https://app.codecrafters.io/users/Parwathi-Jayaram?r=2qF)
 # Claude Code Clone
 
 A VS Code extension that brings an AI-powered coding assistant directly into your editor. It uses LLMs to understand code and perform actions through tool calls, just like Claude Code.
